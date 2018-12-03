@@ -32,7 +32,10 @@ export default {
   },
   methods: {
     submitLogin() {
-      this.$router.push("/")
+      if(this.form.username){
+        this.$store.dispatch("loginWithUserName",this.form.username)
+        this.$router.push("/")
+      }
     }
   }
 
