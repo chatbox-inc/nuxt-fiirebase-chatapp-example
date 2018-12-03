@@ -16,7 +16,7 @@
             <div class="input-group-prepend">
               <div class="input-group-text">@</div>
             </div>
-            <input type="text" class="form-control" disabled>
+            <input type="text" class="form-control" v-model="user.name" disabled>
           </div>
         </div>
         <div class="form-group">
