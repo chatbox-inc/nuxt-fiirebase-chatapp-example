@@ -1,6 +1,8 @@
+import firebase from '~/service/firebase'
+
 export const state = () => {
   return {
-    user: null,
+    user: undefined,
     posts: []
   }
 }
@@ -15,8 +17,12 @@ export const mutations = {
 }
 
 export const actions = {
-  loginWithUserName({commit}, name) {
-    commit("setUser",{ name })
+  async loginWithUserName({commit}) {
+    const provider = new firebase.auth.GithubAuthProvider()
+    const result = await firebase.auth().signInWithPopup(provider)
+    // var token = result.credential.accessToken
+    var user = result.user
+    commit("setUser",{ name: user.displayName })
   },
   addComments({ state, commit} , comment) {
     const date = new Date()
@@ -24,6 +30,15 @@ export const actions = {
       comment,
       user: state.user.name,
       date: `${date.getMonth()+1}/${date.getDate()} ${date.getHours()}:${date.getMinutes()}`
+    })
+  },
+  async INIT_USERS({commit} ){
+    firebase.auth().onAuthStateChanged(user => {
+      if(user){
+        commit("setUser",{ name: user.displayName })
+      }else{
+        commit("setUser", null)
+      }
     })
   }
 }
