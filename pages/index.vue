@@ -59,6 +59,9 @@ export default {
     }
   },
   methods: {
+    login(){
+      console.log("login")
+    },
     submitPost() {
       if (this.form.comment === "") {
         return false
