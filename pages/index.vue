@@ -60,7 +60,7 @@ export default {
   },
   methods: {
     login(){
-      console.log("login")
+      this.$store.dispatch("loginWithUserName","chatter")
     },
     submitPost() {
       if (this.form.comment === "") {

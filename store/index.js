@@ -10,7 +10,7 @@ export const mutations = {
     state.user = user
   },
   addPosts(state, post) {
-    state.posts.push(post)
+    state.posts.unshift(post)
   }
 }
 
