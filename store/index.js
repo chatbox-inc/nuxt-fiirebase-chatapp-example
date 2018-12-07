@@ -3,7 +3,6 @@ import { firebaseMutations, firebaseAction } from 'vuexfire'
 const db = firebase.database()
 const postsRef = db.ref("/posts")
 
-
 export const state = () => {
   return {
     user: undefined,
