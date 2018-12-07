@@ -55,10 +55,11 @@ export default {
       return this.$store.state.user
     },
     posts() {
-      return this.$store.state.posts
+      return [...this.$store.state.posts].reverse()
     }
   },
   async mounted() {
+    this.$store.dispatch("INIT_POSTS")
     await this.$store.dispatch("INIT_USERS")
   },
   methods: {
