@@ -6,7 +6,7 @@
         <p>
           コメントを投稿するには、ユーザ名を入力してください。
         </p>
-        <router-link class="btn btn-light btn-block" tabindex="" to="/signup">ログイン</router-link>
+        <a class="btn btn-light btn-block" tabindex="" @click="login">ログイン</a>
       </div>
 
       <form v-if="user">
