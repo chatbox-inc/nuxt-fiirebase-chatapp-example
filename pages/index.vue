@@ -1,66 +1,97 @@
 <template>
   <section class="container">
-    <div>
-      <logo/>
-      <h1 class="title">
-        nuxt-firebase-example
-      </h1>
-      <h2 class="subtitle">
-        My fabulous Nuxt.js project
-      </h2>
-      <div class="links">
-        <a
-          href="https://nuxtjs.org/"
-          target="_blank"
-          class="button--green">Documentation</a>
-        <a
-          href="https://github.com/nuxt/nuxt.js"
-          target="_blank"
-          class="button--grey">GitHub</a>
+
+    <div class="mb-3">
+      <div v-if="!user">
+        <p>
+          コメントを投稿するには、ユーザ名を入力してください。
+        </p>
+        <a class="btn btn-light btn-block" tabindex="" @click="login">ログイン</a>
+      </div>
+
+      <form v-if="user">
+        <div class="form-group">
+          <label>Name</label>
+          <div class="input-group mb-2">
+            <div class="input-group-prepend">
+              <div class="input-group-text">@</div>
+            </div>
+            <input type="text" class="form-control" v-model="user.name" disabled>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Comment</label>
+          <textarea class="form-control" v-model="form.comment" rows="3"/>
+        </div>
+        <div class="form-group">
+          <a class="btn btn-light btn-block" tabindex="" @click="submitPost">投稿</a>
+        </div>
+      </form>
+    </div>
+
+    <div class="list-group list-group-flush">
+      <div class="list-group-item list-group-item-action flex-column align-items-start" v-for="(post,index) in posts" :key="index">
+        <div class="d-flex w-100 justify-content-between">
+          <h5 class="mb-1">{{ post.user }}</h5>
+          <small>{{ post.date }}</small>
+        </div>
+        <p class="mb-1">{{ post.comment }}</p>
       </div>
     </div>
   </section>
 </template>
 
 <script>
-import Logo from '~/components/Logo.vue'
-
 export default {
-  components: {
-    Logo
+  data(){
+    return {
+      user: {
+        name: ""
+      },
+      form: {
+        comment: ""
+      },
+      posts: [
+        {
+          user: "mikakane",
+          comment: "Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.",
+          date: "01/01 11:00"
+        },
+        {
+          user: "mikakane",
+          comment: "Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.",
+          date: "01/01 11:00"
+        },
+        {
+          user: "mikakane",
+          comment: "Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.",
+          date: "01/01 11:00"
+        }
+      ]
+    }
+  },
+  methods: {
+    login(){
+      console.log("login")
+    },
+    submitPost() {
+      if (this.form.comment === "") {
+        return false
+      }
+      const date = new Date()
+      this.posts.push({
+        comment: this.form.comment,
+        user: this.user.name,
+        date: `${date.getMonth()+1}/${date.getDate()} ${date.getHours()}:${date.getMinutes()}`
+      })
+      this.form.comment = ""
+    }
   }
+
 }
 </script>
 
 <style>
 
-.container {
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-}
 
-.title {
-  font-family: 'Quicksand', 'Source Sans Pro', -apple-system, BlinkMacSystemFont,
-    'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  display: block;
-  font-weight: 300;
-  font-size: 100px;
-  color: #35495e;
-  letter-spacing: 1px;
-}
-
-.subtitle {
-  font-weight: 300;
-  font-size: 42px;
-  color: #526488;
-  word-spacing: 5px;
-  padding-bottom: 15px;
-}
-
-.links {
-  padding-top: 15px;
-}
 </style>
