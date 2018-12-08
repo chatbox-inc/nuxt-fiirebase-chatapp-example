@@ -45,45 +45,28 @@
 export default {
   data(){
     return {
-      user: {
-        name: ""
-      },
       form: {
         comment: ""
-      },
-      posts: [
-        {
-          user: "mikakane",
-          comment: "Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.",
-          date: "01/01 11:00"
-        },
-        {
-          user: "mikakane",
-          comment: "Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.",
-          date: "01/01 11:00"
-        },
-        {
-          user: "mikakane",
-          comment: "Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.",
-          date: "01/01 11:00"
-        }
-      ]
+      }
+    }
+  },
+  computed: {
+    user() {
+      return this.$store.state.user
+    },
+    posts() {
+      return this.$store.state.posts
     }
   },
   methods: {
     login(){
-      console.log("login")
+      this.$store.dispatch("loginWithUserName","chatter")
     },
     submitPost() {
       if (this.form.comment === "") {
         return false
       }
-      const date = new Date()
-      this.posts.push({
-        comment: this.form.comment,
-        user: this.user.name,
-        date: `${date.getMonth()+1}/${date.getDate()} ${date.getHours()}:${date.getMinutes()}`
-      })
+      this.$store.dispatch("addComments",this.form.comment)
       this.form.comment = ""
     }
   }
