@@ -1,4 +1,7 @@
 import firebase from '~/service/firebase'
+import { firebaseMutations, firebaseAction } from 'vuexfire'
+const db = firebase.database()
+const postsRef = db.ref("/posts")
 
 export const state = () => {
   return {
@@ -8,11 +11,9 @@ export const state = () => {
 }
 
 export const mutations = {
+  ...firebaseMutations,
   setUser(state, user) {
     state.user = user
-  },
-  addPosts(state, post) {
-    state.posts.unshift(post)
   }
 }
 
@@ -26,12 +27,17 @@ export const actions = {
   },
   addComments({ state, commit} , comment) {
     const date = new Date()
-    commit("addPosts",{
+    postsRef.push().set({
       comment,
       user: state.user.name,
       date: `${date.getMonth()+1}/${date.getDate()} ${date.getHours()}:${date.getMinutes()}`
     })
   },
+  INIT_POSTS: firebaseAction(({ bindFirebaseRef }) => {
+    return new Promise( (resolve) => {
+      bindFirebaseRef('posts', postsRef,{ resolve })
+    })
+  }),
   async INIT_USERS({commit} ){
     firebase.auth().onAuthStateChanged(user => {
       if(user){
