@@ -2,7 +2,7 @@
   <section class="container">
 
     <div class="mb-3">
-      <div v-if="!user">
+      <div v-if="user === null">
         <p>
           コメントを投稿するには、ユーザ名を入力してください。
         </p>
@@ -58,9 +58,12 @@ export default {
       return this.$store.state.posts
     }
   },
+  async mounted() {
+    await this.$store.dispatch("INIT_USERS")
+  },
   methods: {
     login(){
-      this.$store.dispatch("loginWithUserName","chatter")
+      this.$store.dispatch("loginWithUserName")
     },
     submitPost() {
       if (this.form.comment === "") {
